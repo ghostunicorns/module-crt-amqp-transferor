@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright © GhostUnicorns All rights reserved.
+  ~ See LICENSE and/or COPYING.txt for license details.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="GhostUnicorns\CrtAmqpTransferor\Api\TransferorRepositoryInterface" type="GhostUnicorns\CrtAmqpTransferor\Model\TransferorRepository"/>
+    <preference for="GhostUnicorns\CrtAmqpTransferor\Api\Data\TransferorInterface" type="GhostUnicorns\CrtAmqpTransferor\Model\TransferorModel"/>
+    <preference for="GhostUnicorns\CrtAmqpTransferor\Api\Data\TransferorSearchResultInterface" type="GhostUnicorns\CrtAmqpTransferor\Model\TransferorSearchResult"/>
+</config>

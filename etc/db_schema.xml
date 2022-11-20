@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright © GhostUnicorns All rights reserved.
+  ~ See LICENSE and/or COPYING.txt for license details.
+  -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="crt_amqp_transferor" resource="default" engine="innodb" comment="Crt Transferor Table">
+        <column xsi:type="int" name="transferor_id" padding="10" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="activity_id" padding="10" unsigned="true" nullable="false"/>
+        <column xsi:type="varchar" name="transferor_type" nullable="false" length="255"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="255"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Row Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Row Modification Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="transferor_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CRT_AMQP_TRANSFEROR_ACTIVITY_ID_UNIQUE">
+            <column name="activity_id"/>
+            <column name="transferor_type"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CRT_AMQP_TRANSFEROR_ID_ACTIVITY_ID"
+                    table="crt_amqp_transferor" column="activity_id"
+                    referenceTable="crt_activity" referenceColumn="activity_id"
+                    onDelete="CASCADE"/>
+        <index referenceId="CRT_ACTIVITY_ID" indexType="btree">
+            <column name="activity_id"/>
+        </index>
+    </table>
+    <table name="crt_amqp_refiner" resource="default" engine="innodb" comment="Crt Refiner Table">
+        <column xsi:type="int" name="refiner_id" padding="10" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="activity_id" padding="10" unsigned="true" nullable="false"/>
+        <column xsi:type="varchar" name="entity_identifier" nullable="false" length="255"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="255"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Row Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Row Modification Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="refiner_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CRT_AMQP_REFINER_ACTIVITY_ID_ENTITY_IDENTIFIER_UNIQUE">
+            <column name="activity_id"/>
+            <column name="entity_identifier"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CRT_AMQP_REFINER_ID_ACTIVITY_ID"
+                    table="crt_amqp_refiner" column="activity_id"
+                    referenceTable="crt_activity" referenceColumn="activity_id"
+                    onDelete="CASCADE"/>
+        <index referenceId="CRT_ACTIVITY_ID" indexType="btree">
+            <column name="activity_id"/>
+        </index>
+    </table>
+    <table name="crt_entity" resource="default" engine="innodb" comment="Crt Entity Table">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="activity_id" padding="10" unsigned="true" nullable="false"/>
+        <column xsi:type="varchar" name="type" nullable="false" length="255"/>
+        <column xsi:type="varchar" name="identifier" nullable="false" length="255"/>
+        <column xsi:type="longtext" name="data_original" nullable="false" comment="Data before refiner"/>
+        <column xsi:type="longtext" name="data_refined" nullable="true" comment="Data after refiner"/>
+        <column xsi:type="mediumtext" name="extra" nullable="true" comment="Extra data"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Row Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Row Modification Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CRT_ENTITY_ID_ACTIVITY_ID"
+                    table="crt_entity" column="activity_id"
+                    referenceTable="crt_activity" referenceColumn="activity_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="CRT_ENTITY_UNIQUE">
+            <column name="activity_id"/>
+            <column name="type"/>
+            <column name="identifier"/>
+        </constraint>
+        <index referenceId="CRT_ACTIVITY_ID" indexType="btree">
+            <column name="activity_id"/>
+        </index>
+    </table>
+</schema>
